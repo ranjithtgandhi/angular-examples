@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script type="text/javascript" >
+
+	var app =  angular.module("myApp",[]);
+	app.controller("myCtrl",function($scope){
+		$scope.a = 10;
+		$scope.b = 20;
+
+		$scope.changeValueB = function(){
+			$scope.b =25;
+		}
+		
+	});
+	app.directive("myDirective",function(){
+		return {
+			templateUrl : 'a02-info-msg.html',
+			scope:true,
+			controller : function($scope,$element,$attrs){
+				$scope.c= 150;
+				$scope.changeValueB = function(){
+					$scope.b =5;
+				}
+				$scope.changeValueA = function(){
+					$scope.a =15;
+				}
+
+			}
+		}		
+	});
+
+	
+
+	</script>
+</head>
+<body>
+	<div ng-app="myApp">
+		<div ng-controller="myCtrl">
+			Controller 1 : a = {{a}}, b = {{b}}
+			<button ng-click="changeValueB();">Change</button>
+			<hr/>
+			<br/>
+			Directive:1 Instance:1 <div my-directive></div>   <br/> 
+			Directive:1 Instance:2 <div my-directive></div>   <br/> 
+			<!-- Directive:1 Instance:1 <my-directive x="Hi" y="Ranjith"></my-directive>   <br/>  
+			Directive:1 Instance:2 <my-directive x="{{p}}" y="{{q}}"></my-directive>   <br/>  
+			Directive:1 Instance:2 <my-directive x="{{p *30}}" y="{{q *10}}"></my-directive>    
+
+
+			<hr/>
+			Directive:2 Instance :1 <my-directive2 m="{{a}}" n="{{b}}"></my-directive2> 
+
+			<hr/>
+			Directive:3 Instance using controller :1 <my-directive3 m="{{a}}" n="{{b}}"></my-directive3> 
+			Directive:4 Instance using link :1 <my-directive4 m="{{a}}" n="{{b}}"></my-directive4>    -->
+			
+			
+
+		</div>
+	</div>
+
+</body>
+</html>

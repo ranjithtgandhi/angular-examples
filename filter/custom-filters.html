@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+<body ng-app="myApp">
+<div ng-controller="myCtrl">
+	<input type="text" ng-model="arrFilter">
+	<ul ng-show="objs" > 
+		<li ng-repeat="obj in objs | filter:arrFilter">Name => {{obj.Name | filterUppercase}}, City => {{obj.City}}, Country => {{obj.Country}}</li>
+	</ul>
+	<div ng-show="!objs">{{error}}</div>
+</div>
+<script type="text/javascript">
+	var app=angular.module("myApp",[]);
+		app.controller("myCtrl",function($scope,$http){
+			$http.get('data.json')
+			.then(function(res){
+				$scope.objs = res.data.records;
+			},function(res){
+				$scope.error =  "Something went wrong";
+			});
+			
+		})
+		.filter('filterUppercase',function(){
+
+			return function(input){
+				console.log(input);
+				return input.toUpperCase();
+			}
+
+		});
+</script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	 <!-- <link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	 <link href="../bootstrap/dist/css/font-awesome.css" rel="stylesheet" /> -->
+
+	 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	 <link href="../bootstrap/dist/css/font-awesome.css" rel="stylesheet" />
+	  -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	  
+
+</head>
+
+<body ng-app="myApp" style="padding-top: 20px">
+<div ng-controller="myCtrl">
+	<div class="container">
+
+<div class="row justify-content-center">
+<div class="col-10">
+	
+  <div class="container">
+
+  
+  <div class="row alert alert-info">
+    <div class="col">
+      <b>Sort By :</b> {{ sortType }}
+    </div>
+    <div class="col">
+      <b>Sort Order :</b> {{ sortOrder }}
+    </div>
+    <div class="w-100"></div>
+    <div class="col">
+      <b>Search By :</b> {{ searchData }}
+    </div>
+    <div class="col">
+      <b>Total Records :</b> {{ ( records | filter:searchData ).length }}
+    </div>
+    <!-- <div class="w-100"></div>
+    <div class="col-12">Total Records : </div> -->
+  </div>
+
+
+</div>
+  
+  <form>
+    <div class="form-group">
+      <div class="input-group">
+       
+        <input type="text" class="form-control" placeholder="Search Records" ng-model="inputData" ng-keyup="keyupFilter(inputData);" >
+         <div class="input-group-addon bg-success text-white" ng-click="clickFilter(inputData);" ><i class="fa fa-search"></i></div>
+      </div>      
+    </div>
+  </form>
+	<table class="table table-hover table-bordered">
+  <thead class="bg-info">
+      <tr>
+      	<th scope="row" class="text-white">#</th>
+        <th>
+          <a href="javascript:void(0);" class="text-white" ng-click="sortType = 'name'; sortOrder = !sortOrder">
+            Name 
+            <span ng-show="sortType == 'name' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'name' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+          <a href="javascript:void(0);"  class="text-white" ng-click="sortType = 'city'; sortOrder = !sortOrder">
+          City 
+            <span ng-show="sortType == 'city' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'city' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+          <a href="javascript:void(0);"  class="text-white" ng-click="sortType = 'house'; sortOrder = !sortOrder">
+         House 
+            <span ng-show="sortType == 'house' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'house' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+          <a href="javascript:void(0);"  class="text-white" ng-click="sortType = 'years'; sortOrder = !sortOrder">
+         Years 
+            <span ng-show="sortType == 'years' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'years' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+          <a href="javascript:void(0);"  class="text-white" ng-click="sortType = 'cdate'; sortOrder = !sortOrder">
+         Created Date 
+            <span ng-show="sortType == 'cdate' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'cdate' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+      </tr>
+    </thead>
+  <tbody>
+    <tr ng-show="records && (records.length >0)" ng-repeat="record in records | orderBy:sortType:sortOrder | filter:searchData">
+      <th scope="row">{{$index+1}}</th>
+      <td>{{record.name}}</td>
+      <td>{{record.city}}</td>
+      <td>{{record.house}}</td>
+       <td>{{record.years}}</td>
+        <td>{{record.cdate  | date:'dd-MMM-yyyy hh:mm : a'}}</td>
+    </tr>
+    <tr ng-show="!records">
+    	<td colspan="6" class="text-center alert alert-danger">{{error}}</td>
+    </tr>
+    <tr ng-show="!( records | filter:searchData ).length" >
+    	<td colspan="6" class="text-center alert alert-danger">No Records Found!!!</td>
+    </tr>
+    
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<script type="text/javascript">
+	var app=angular.module("myApp",[]);
+		app.controller("myCtrl",function($scope,$http){
+			$scope.sortType     = 'name'; 
+			$scope.sortOrder  = false; 
+			$scope.searchData   = '';
+			$scope.keyupFilter = function(val){
+				if(!val.trim()){
+					$scope.searchData = val;	
+				}				
+			};
+			$scope.clickFilter = function(val){
+				$scope.searchData = val;
+			};
+
+			var obj = [
+				
+				{	cdate : new Date('30-Nov-2015 10:54:19 AM') },
+				{	cdate : new Date('01-Oct-2015 10:54:19 AM') },
+				{	cdate : new Date('15-Jun-2015 10:54:19 AM') },
+				{	cdate : new Date('01-Dec-2015 10:54:19 AM') },
+				{	cdate : new Date('30-Nov-2015 10:54:20 AM') },
+				{	cdate : new Date('30-Nov-2015 10:55:19 AM') },
+				{	cdate : new Date('30-Jan-2015 10:54:19 AM') },
+				{	cdate : new Date('28-Feb-2015 10:54:19 AM') },
+				{	cdate : new Date('30-Mar-2015 10:54:19 AM') },
+				{	cdate : new Date('01-Apr-2015 10:54:19 AM') },
+				{	cdate : new Date('30-Nov-2015 10:54:19 AM') },
+				{	cdate : new Date('31-Aug-2015 10:54:19 AM') },
+				{	cdate : new Date('01-Sep-2015 10:54:19 AM') },
+				{	cdate : new Date('30-Oct-2015 10:54:19 AM') },
+				{	cdate : new Date('30-Nov-2015 10:54:19 AM') },
+				{	cdate : new Date('30-Dec-2015 10:54:19 AM') },
+				{	cdate : new Date('30-Nov-2015 11:54:19 AM') },
+				{	cdate : new Date('30-Nov-2015 12:54:19 PM') },
+				{	cdate : new Date('30-Nov-2015 01:54:19 PM') },
+				{	cdate : new Date('30-Nov-2015 02:54:19 AM') }
+
+			];  
+
+			$http.get("sample-data.json")
+			.then(function(res){
+
+				angular.forEach(obj,function(val,key){
+					res.data[key]['cdate'] = obj[key].cdate;
+				},res.data);
+				$scope.records =  res.data;
+				//console.log($scope.records);
+			},function(res){
+				$scope.error =  "Something went wrong";
+			});
+
+			
+
+		});
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  </body>
+</html>

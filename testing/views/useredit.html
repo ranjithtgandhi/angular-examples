@@ -1,0 +1,73 @@
+<md-content layout-padding>
+            <form name = "userform" novalidate="novalidate">
+               <div class="col-md-12" style="background-color:white">
+			   <div class="row">
+			 <div class="col-md-6">
+			      <md-input-container class = "md-block">
+                  <label>First Name</label>
+                  <input required name = "userName" ng-model="firstName">
+                  <div ng-messages = "userform.userName.$error">
+                     <div ng-message = "required">Please Enter First Name</div>
+                  </div>
+               </md-input-container>
+			   </div>
+            <div class="col-md-6">
+               <md-input-container class = "md-block">
+                  <label>Last Name</label>
+                  <input  required name = "lastnames" ng-model ="lastName">
+                  <div ng-messages = "userform.lastnames.$error">
+                     <div ng-message ="required">Please Enter Last Name</div>
+                     
+                  </div>
+               </md-input-container>
+               </div>
+			   </div>
+			   <div class="row">
+			   <div class="col-md-6">
+			      <md-input-container class="md-block">
+                  <label>Age</label>
+                  <input required numbers-only name = "ages" ng-model = "age">
+                  <div ng-messages = "userform.ages.$error">
+                     <div ng-message = "required">Please Enter Age</div>
+                  </div>
+               </md-input-container>
+			   </div>
+			    <div class="col-md-6">
+			      <md-input-container class = "md-block">
+                  <label>Employer</label>
+                  <input required name = "empoyer" ng-model = "employer">
+                  <div ng-messages = "userform.empoyer.$error">
+                     <div ng-message = "required">Please Enter Employer</div>
+                  </div>
+               </md-input-container>
+			   </div>
+			   </div>
+			    <div class="row">
+			   <div class="col-md-6">
+			    <md-input-container class = "md-block">
+			       <div flex-gt-xs>
+    
+      <md-datepicker name="date" ng-model="joiningdate" md-placeholder="Enter date" required></md-datepicker>
+	  <div ng-messages = "userform.joiningDate.$error">
+                     <div ng-message = "required">Please Choose Joining Date</div>
+                  </div>
+    </div>
+	</md-input-container>
+			   </div>
+			    <div class="col-md-6">
+			      <md-input-container class = "md-block">
+                  <label>Locatioin</label>
+                  <input required name = "location" ng-model = "location">
+                  <div ng-messages = "userform.location.$error">
+                     <div ng-message = "required">Please Enter Location</div>
+                  </div>
+               </md-input-container>
+			   </div>
+			   </div>
+			   <div class="row" style="text-align:center">
+			   <button type="submit" ng-click="closeDialog()"  class="btn">Cancel</button>
+			   <button type="submit" ng-click="userform.$valid && updateuser(index)"  class="btn">update</button>
+			   </div>
+			   </div>
+            </form>
+         </md-content>

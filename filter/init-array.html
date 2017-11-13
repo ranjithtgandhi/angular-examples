@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+<body ng-app="">
+<div ng-init="arrs=['one','two','three','four','five','six','seven','eight','nine','ten']">
+	<input type="text" ng-model="arrFilter">
+	<ul >
+		<li ng-repeat="arr in arrs | filter:arrFilter">{{arr}}</li>
+	</ul>
+</div>
+</body>
+</html>

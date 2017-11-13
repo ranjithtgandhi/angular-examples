@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script type="text/javascript">
+	var app = angular.module('myApp',[])
+		.controller('myCtrl',function($scope){
+			$scope.movie = "Ice Age";
+		    $scope.rating = 5;
+		    $scope.pname = 'ranjith';
+		    $scope.displayInfo = function(movie,rating) {
+		        alert("Movie : " + movie + ", Rating : " + rating);
+		    }
+		    $scope.doChange = function(pname) {
+		        $scope.pname =pname;
+		    }
+		    $scope.records=[
+			    {
+			      "Name": "ranjith",
+			      "City": "Berlin",
+			      "Country": "Germany"
+			    },
+			    {
+			      "Name": "kumar",
+			      "City": "México D.F",
+			      "Country": "Mexico"
+			    }];
+		})
+		.directive("myDirective",function(){
+			return {
+		        restrict: "E",
+		        scope: {
+		            ratings: '=ratings',
+		            movies: '@movies',
+		            emp: '@',
+		            person: '=',
+		            displays: '&display'
+
+		        },
+		        
+		        link : function(scope,iElet,iAttr){
+		        	//var iAttr.
+		        	var empl=JSON.parse(scope.emp);
+		        	iElet.bind('blur', function() {// keyup change
+		                scope.$apply(iAttr.person);
+		            });
+		        	var person=scope.person;
+		        	//console.log(person);
+
+		        	//console.log(empl[0]);
+		        	var per;
+		        	angular.forEach(empl,function(val,key){
+		        		if(empl[key].Name == person){
+		        			per=val;
+		        		}
+		        	});
+		        	scope.per=per;
+		        	console.log(scope.per);
+		        	
+		        	/*var html = '<div ng-repeat="i in getInputBoxNum() track by $index"><input id="{{$index+1}}" type="text" ng-model="userInputBoxRecordList" name="box"' + 'style="background-color:beige; border:1px solid black;"></div>';
+        var e = $compile(html)($scope);
+        $element.replaceWith(e);*/
+		        },
+		        template: "{{person}}<ol ><li ng-repeat='o in per'>{{o}}</li></ol>"
+		        //templateUrl : "temp.html"
+		        //<div><button ng-click='display()'>View Movie</button></div>
+    		};
+
+		});
+
+
+</script>
+</head>
+<body>
+	<div ng-app="myApp">
+		<div ng-controller="myCtrl">
+			<h2>Movie Name : {{movie}}</h2>
+        <h3>Rating : {{rating}}</h3>
+        Rate the movie - View : <input type='text' ng-model='rating' />
+        Person Name : <input type='text' ng-model='pname' ng-blur="doChange(pname);" class="pname" />
+        <my-directive ratings="rating" movies="{{movie}}" emp="{{records}}" person="pname"  display="displayInfo(movie,rating)">
+ </my-directive>
+          <ul>
+          	
+          	<li ng-repeat="record in records">
+          		{{record.Name}}
+          	</li>
+          </ul>
+
+		</div>
+	</div>
+
+</body>
+</html>

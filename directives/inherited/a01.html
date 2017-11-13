@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script type="text/javascript" >
+
+	var app =  angular.module("myApp",[]);
+	app.controller("myCtrl",function($scope){
+		$scope.a = 10;
+		$scope.b = 20;
+		$scope.o ={
+			p:100,
+			q:200
+		}
+	});
+	app.controller("myCtrl2",function($scope){
+		$scope.c = 20;
+		$scope.d = 30;
+	});
+
+	</script>
+</head>
+<body>
+	<div ng-app="myApp">
+		<div ng-controller="myCtrl">
+			Controller 1 : a = {{a}}, b = {{b}}
+			<br/>
+			a = <input  ng-model="a"><br/> 
+			p = {{o.p}}, q = {{o.q}} <br/> <br/>
+			p = <input  ng-model="o.p"><br/>
+			<hr/>
+			<div ng-controller="myCtrl2">
+				Controller 1 : a = {{a}}, b = {{b}} <br/>
+				a = <input  ng-model="a"><br/>
+				Parent - a =  {{$parent.a}}<br/>
+				Inner Child Controller 1 : c = {{c}}, d = {{d}} <br/> <br/>
+				p = <input  ng-model="o.p"><br/>
+				 p = {{o.p}}, q = {{o.q}} <br/> <br/>
+			</div>
+			<!-- Directive:1 Instance:1 <my-directive x="Hi" y="Ranjith"></my-directive>   <br/>  
+			Directive:1 Instance:2 <my-directive x="{{p}}" y="{{q}}"></my-directive>   <br/>  
+			Directive:1 Instance:2 <my-directive x="{{p *30}}" y="{{q *10}}"></my-directive>    
+
+
+			<hr/>
+			Directive:2 Instance :1 <my-directive2 m="{{a}}" n="{{b}}"></my-directive2> 
+
+			<hr/>
+			Directive:3 Instance using controller :1 <my-directive3 m="{{a}}" n="{{b}}"></my-directive3> 
+			Directive:4 Instance using link :1 <my-directive4 m="{{a}}" n="{{b}}"></my-directive4>    -->
+			
+			
+
+		</div>
+	</div>
+
+</body>
+</html>

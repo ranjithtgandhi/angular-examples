@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script type="text/javascript">
+	var app = angular.module('myApp',[])
+		.controller('myCtrl',function($scope){
+
+		})
+		.directive("myDirective",function(){
+			return {
+				restrict : "M",
+				replace : true,
+				template: "<div>this text is displayed because of 'my-directive' custom directive</div>",
+				link : function (scope,ele,attr) {
+					ele.css('color','red');
+					ele.bind('click',function(){
+						ele.css('color','green');
+					});
+				}
+			}
+
+		});
+
+
+</script>
+</head>
+<body>
+	<div ng-app="myApp">
+		<div ng-controller="myCtrl">
+			<!-- <div my-directive></div> -->
+			<!-- <my-directive></my-directive> -->
+			<!-- <div class="my-directive"></div> -->
+			<!-- directive:my-directive -->
+		</div>
+	</div>
+
+</body>
+</html>

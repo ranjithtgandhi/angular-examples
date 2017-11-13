@@ -1,0 +1,66 @@
+{  
+  "Employees": [  
+    {  
+      "id": 1,  
+      "firstName": "Mithilesh",  
+      "lastName": "Mithilesh",  
+      "address": "Hyderabad",  
+      "dateOfBirth": "2013-01-08",  
+      "phoneNo": "8923742593",  
+      "emailId": "mithileshdotnet@gmail.com", 
+      "selected": true  
+    },  
+  
+    {  
+      "id": 2,  
+      "firstName": "Sanjeev",  
+      "lastName": "Kumar",  
+      "address": "Delhi",  
+      "dateOfBirth": "2003-01-08",  
+      "phoneNo": "8923756993",  
+      "emailId": "sanjeev@gmail.com", 
+      "selected": false  
+    },  
+    {  
+      "id": 3,  
+      "firstName": "Neha",  
+      "lastName": "Kumari",  
+      "address": "Hyderabad",  
+      "dateOfBirth": "2013-01-08",  
+      "phoneNo": "892374293",  
+      "emailId": "neha@gmail.com", 
+      "selected": true  
+    },  
+    {  
+      "id": 4,  
+      "firstName": "Sohan",  
+      "lastName": "Singh",  
+      "address": "Cuttack",  
+      "dateOfBirth": "2010-01-08",  
+      "phoneNo": "892374293",  
+      "emailId": "sohan@gmail.com", 
+      "selected": true  
+    },  
+    {  
+      "id": 5,  
+      "firstName": "Sony",  
+      "lastName": "Singh",  
+      "address": "Cuttack",  
+      "dateOfBirth": "2010-01-08",  
+      "phoneNo": "892374293",  
+      "emailId": "sony@gmail.com", 
+      "selected": false  
+    },  
+    {  
+      "id": 6,  
+      "firstName": "Kajal",  
+      "lastName": "Kumari",  
+      "address": "Patna",  
+      "dateOfBirth": "2011-01-08",  
+      "phoneNo": "892374293",  
+      "emailId": "kajal@gmail.com",
+      "selected": false  
+    }  
+  
+  ]  
+}

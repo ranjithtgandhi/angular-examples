@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+	
+
+	 <!-- <link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	 <link href="../bootstrap/dist/css/font-awesome.css" rel="stylesheet" /> -->
+
+	 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	 <link href="../bootstrap/dist/css/font-awesome.css" rel="stylesheet" />
+	  -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	  
+
+</head>
+
+<body ng-app="myApp" style="padding-top: 20px">
+<div ng-controller="myCtrl">
+	<div class="container">
+
+<div class="row justify-content-center">
+<div class="col-5">
+
+  
+  <form name="empreg">
+  	<div class="form-group">
+     Emp. Name <div class="input-group">
+       
+        <input type="text" class="form-control" placeholder="Search Records" ng-model="empname" required >
+      </div>      
+    </div>
+    <div class="form-group">
+     Emp. Email Address <div class="input-group">
+       
+        <input type="text" class="form-control" placeholder="Search Records" ng-model="empemail" required>
+      </div>      
+    </div>
+    <div class="form-group">
+    Emp. Age <div class="input-group">
+       
+        <input type="text" class="form-control" placeholder="Search Records" ng-model="empage" required>
+      </div>      
+    </div>
+    <div class="form-group">
+    Emp. Phone <div class="input-group">
+       
+        <input type="text" class="form-control" placeholder="Search Records" ng-model="empphone" required >
+      </div>      
+    </div>
+    <div class="form-group"> Knowlege in Technology
+      <div class="input-group">
+
+       <div class="form-check form-check-inline" ng-repeat="option in techopt">
+        <label class="form-check-label"  for="{{option}}" >
+          <input class="form-check-input" type="checkbox" id="tech_{{$index+1}}" ng-model="option.value" > {{option.name}}
+        </label>
+       </div>
+      
+    </div>
+    </div>
+
+    <div class="form-group"> Special in Technology
+      <div class="input-group">
+
+       <div class="form-check form-check-inline" ng-repeat="rad in radopt">
+        <label class="form-check-label"  for="{{rad}}" >
+          <input class="form-check-input" type="radio" id="tech_{{$index+1}}" name="radiotech" ng-value="{{$index}}" ng-model="$parent.radiotech" > {{rad.name}}
+        </label>
+       </div>
+      
+    </div>
+    </div>
+
+    <div class="form-group">
+    <label for="selTech">Select Technology</label>
+    <select class="form-control" id="selecttech" ng-model="selecttech" ng-options="k as v.name for (k,v) in selopt">
+     
+    </select>
+  </div>
+
+  <div class="form-group">
+  <label for="comment">About Technology:</label>
+  <textarea class="form-control" rows="5" id="comment" ng-model="empabout">{{empabout}}</textarea>
+</div>
+
+
+    <div class="form-group">
+      <div class="input-group">
+       
+        <button ng-if="action=='A'" name="submit" ng-click="addEmployee();">Add</button>
+         <button ng-if="action=='E'" name="submit" ng-click="updateEmployee({id:empindex})">Update</button>
+    </div>
+      </div>      
+   
+  </form>
+ </div>
+ <div class="col-10">
+ 	
+ 		<table class="table table-hover table-bordered">
+  <thead class="bg-info">
+      <tr>
+      	<th scope="row" class="text-white">#</th>
+        <th>
+          <a href="javascript:void(0);" class="text-white" ng-click="sortType = 'empname'; sortOrder = !sortOrder">
+           Name 
+            <span ng-show="sortType == 'empname' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'empname' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+          <a href="javascript:void(0);"  class="text-white" ng-click="sortType = 'city'; sortOrder = !sortOrder">
+         Email 
+            <span ng-show="sortType == 'city' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'city' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+          <a href="javascript:void(0);"  class="text-white" ng-click="sortType = 'house'; sortOrder = !sortOrder">
+         Age 
+            <span ng-show="sortType == 'house' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'house' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+          <a href="javascript:void(0);"  class="text-white" ng-click="sortType = 'years'; sortOrder = !sortOrder">
+         Phone 
+            <span ng-show="sortType == 'years' && !sortOrder" class="fa fa-caret-down"></span>
+            <span ng-show="sortType == 'years' && sortOrder" class="fa fa-caret-up"></span>
+          </a>
+        </th>
+        <th>
+         Lik Technology 
+        </th>
+         <th>
+         Special Technology 
+        </th>
+        <th>
+         Selected Technology 
+        </th>
+         <th>
+         About Technology 
+        </th>
+        <th>
+         Action 
+        </th>
+       
+      </tr>
+    </thead>
+  <tbody>
+    <tr  ng-repeat="record in employees | orderBy:sortType:sortOrder  track by $index ">
+      <th scope="row">{{$index+1}}</th>
+      <td>{{record.empname}}</td>
+      <td>{{record.empemail}}</td>
+      <td>{{record.empage}}</td>
+      <td>{{record.empphone}}</td>
+       <td>
+         <span  ng-repeat="tech in record.emptech">{{tech.name}}{{$last ? '':','}}</span>
+       </td>
+       <td> {{record.emprtech[0].data.name}}</td>
+       <td> {{record.empstech[0].data.name}}</td>
+       <td> {{record.empabout}}</td>
+      <td><a href="javascript:void(0)" ng-click="editEmployee($index);">Edit</a> &nbsp;<a href="javascript:void(0)" ng-click="deleteEmployee($index);">Delete</a></td>
+     
+    </tr>
+    <tr ng-show="!employees">
+    	<td colspan="10" class="text-center alert alert-danger">{{error}}</td>
+    </tr>
+    <tr ng-show="!( employees  ).length" >
+    	<td colspan="10" class="text-center alert alert-danger">No Records Found!!!</td>
+    </tr>
+    
+  </tbody>
+</table>
+ </div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+	var app=angular.module("myApp",['ngStorage']);
+		app.controller("myCtrl",function($scope,$http,$localStorage,getLocalStorage){
+      $scope.shortType = 'empname';
+      $scope.shortOrder = false;
+        $scope.options = [{
+          id:1,
+          name: 'java',
+          value: false,
+        }, {
+          id:2,
+          name: 'php',
+          value: false
+        }, {
+          id:3,
+          name: 'angular',
+          value: false
+        }, {
+          id:4,
+          name: 'node',
+          value: false
+        }, {
+          id:5,
+          name: 'python',
+          value: false
+        }, {
+          id:6,
+          name: 'c++',
+          value: false
+        }]; 
+
+        $scope.emptech =[],$scope.objRadio=[],$scope.objSel=[]; 
+        $scope.techopt = JSON.parse(JSON.stringify($scope.options));
+         $scope.radopt = JSON.parse(JSON.stringify($scope.options));
+          $scope.selopt = JSON.parse(JSON.stringify($scope.options));
+
+			  
+		    $scope.employees = getLocalStorage.getEmployees();
+
+		    $scope.action = 'A';
+		    $scope.addEmployee = function () { 
+          var optionNames = [];var optionRadio;
+                $scope.techopt.forEach(function(option,i) {
+                  if (option.value) {
+                      optionNames.push({'id':option.id,'name':option.name});
+                  }
+                }); 
+            $scope.objRadio.push({'id':$scope.radiotech,'data':$scope.radopt[$scope.radiotech]});
+            $scope.objSel.push({'id':$scope.selecttech,'data':$scope.selopt[$scope.selecttech]});
+
+		        $scope.employees.push({'empno':new  Date().getTime(),'empname':$scope.empname,'empemail':$scope.empemail,'empage':$scope.empage,'empphone':$scope.empphone,'emptech':optionNames,'emprtech':$scope.objRadio,'empstech':$scope.objSel,'empabout':$scope.empabout});    
+		        getLocalStorage.updateEmployees($scope.employees); 
+
+            $scope.techopt = JSON.parse(JSON.stringify($scope.options));   
+		        $scope.empname = '';    
+		        $scope.empemail = '';    
+		        $scope.empage = '';  
+		        $scope.empphone = '';
+            $scope.radiotech='';
+            $scope.selecttech='';  
+            $scope.empabout='';
+		    }; 
+		    $scope.editEmployee = function (index) {
+		    	$scope.action = 'E'; 
+		        var emp = $scope.employees[index];
+		        $scope.empname = emp.empname;
+		        $scope.empemail = emp.empemail;    
+		        $scope.empage =  emp.empage;   
+		        $scope.empphone =  emp.empphone;
+            $scope.radiotech=emp.emprtech[0].id;
+            $scope.selecttech=emp.empstech[0].id;
+            $scope.empabout=emp.empabout;
+            var emptech = emp.emptech; 
+
+            for(i in $scope.techopt) {
+              for(j in emptech) {
+                if($scope.techopt[i].id == emptech[j].id) {
+                     $scope.techopt[i].value=true;
+                }
+              }
+            }
+		        $scope.empindex =  index;  
+		    };
+		     $scope.updateEmployee = function (obj) { 
+		        $scope.action = 'A'; 
+            var optionNames =[];
+            $scope.techopt.forEach(function(option,i) {
+                  if (option.value) { 
+                      optionNames.push({'id':option.id,'name':option.name});
+                  } 
+                }); 
+            $scope.objRadio.push({'id':$scope.radiotech,'data':$scope.radopt[$scope.radiotech]});
+            $scope.objSel.push({'id':$scope.selecttech,'data':$scope.selopt[$scope.selecttech]});
+		        $scope.employees[obj.id] = {'empname':$scope.empname,'empemail':$scope.empemail,'empage':$scope.empage,'empphone':$scope.empphone,'emptech':optionNames,'emprtech':$scope.objRadio,'empstech':$scope.objSel,'empabout':$scope.empabout};
+		        getLocalStorage.updateEmployees($scope.employees);
+            $scope.techopt = JSON.parse(JSON.stringify($scope.options));
+		        $scope.empname = '';    
+		        $scope.empemail = '';    
+		        $scope.empage = '';  
+		        $scope.empphone = ''; 
+            $scope.radiotech=''; 
+            $scope.selecttech='';
+            $scope.empabout=''; 
+		    };        
+		     
+		    $scope.deleteEmployee = function (index) {                       
+		        $scope.employees.splice($scope.employees.indexOf(index), 1);    
+		        getLocalStorage.updateEmployees($scope.employees);  
+		    };   
+			
+
+		})
+		.factory('getLocalStorage', function () {                  
+          var employeeList = {};  
+          return {  
+              updateEmployees: function (EmployeesArr) {  
+                  if (window.localStorage && EmployeesArr) { 
+                      localStorage.setItem("employees", angular.toJson(EmployeesArr));  
+                  } 
+              },  
+              getEmployees: function () {   
+                  employeeList = angular.fromJson(localStorage.getItem("employees"));                         
+                  return employeeList ? employeeList : [];  
+              }  
+          };  
+  
+    });  
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+  </body>
+</html>

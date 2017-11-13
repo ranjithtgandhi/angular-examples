@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+<body ng-app="">
+<div ng-init="objs={1:'one',2:'two',3:'three',4:'four',5:'five',6:'six',7:'seven','eight':8,'nine':9,'ten':10}">
+	<input type="text" ng-model="objFilter">
+	<ul >
+		<li ng-repeat="(key, value) in objs">key => {{key|uppercase}} , value => {{value|uppercase}}</li>
+	</ul>
+</div>
+</body>
+</html>
