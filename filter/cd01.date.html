@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+	
+
+	 <!-- <link href="../bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+	 <link href="../bootstrap/dist/css/font-awesome.css" rel="stylesheet" /> -->
+
+	 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	 <link href="../bootstrap/dist/css/font-awesome.css" rel="stylesheet" />
+	  -->
+	  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	  
+
+</head>
+
+<body ng-app="myApp" style="padding-top: 20px">
+<div ng-controller="myCtrl">
+	<div class="container">
+
+<div class="row justify-content-center">
+<div class="col-5">
+
+  
+  	 <form name="myForm" novalidate>
+    
+    <div class="text-center">
+      {{user.birthdate | date: 'fullDate'}}
+    </div>
+    
+    <div class="row">
+      <div class="col-xs-6">
+        <multi-select-date name="birthdate" ng-model="user.birthdate" year-order="desc" start-year="1980" end-year="2000" required></multi-select-date>
+        <br>
+        
+        <alert type="danger" ng-if="myForm.$invalid" class="clearfix">
+          <ul ng-messages="myForm.birthdate.$error" ng-messages-multiple>
+            <li ng-message="dayRequired">Day required</li>
+            <li ng-message="monthRequired">Month required</li>
+            <li ng-message="yearRequired">Year required</li>
+          </ul>
+        </alert>
+      </div>
+
+      <div class="col-xs-6">
+        Native date input <br />
+        <input type="date" ng-model="user.birthdate" />
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="input-group">
+       
+        <button ng-if="action=='A'" name="submit" ng-click="addEmployee();">Add</button>
+         <button ng-if="action=='E'" name="submit" ng-click="updateEmployee({id:empindex})">Update</button>
+    </div>
+      </div>      
+   
+  </form>
+<script type="text/ng-template" id="multiSelectDate">
+  <div class="row">
+    
+    <div class="col-xs-3">
+      Month
+      <select ng-model="date.month" ng-options="month for month in selects.months()" class="form-control">
+        <option value="" disabled>--</option>
+      </select>
+    </div>
+    
+    <div class="col-xs-3">
+      Day
+      <select ng-model="date.day" ng-options="day for day in selects.days()" class="form-control">
+        <option value="" disabled>--</option>
+      </select>
+    </div>
+    
+    <div class="col-xs-6">
+      Year
+      <select ng-model="date.year" ng-options="year for year in selects.years() | orderBy: year:yearOrder" class="form-control">
+        <option value="" disabled>----</option>
+      </select>
+    </div>
+      
+  </div>
+</script>
+
+ </div>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+	var app=angular.module("myApp",['ngMessages']);
+		app.controller("myCtrl",function($scope,$http){
+     $scope.user = {};
+
+  
+    })
+    .directive('multiSelectDate', function($filter) {
+  return {
+    restrict: 'E',
+    require: '?ngModel',
+    templateUrl: 'multiSelectDate',
+    link: function(scope, element, attrs, ngModel) {
+      if (!ngModel) return;
+
+      // GET FROM NG MODEL AND PUT IT IN LOCAL SCOPE
+      ngModel.$render = function() {
+        scope.date = {
+          day: $filter('date')(ngModel.$viewValue, 'dd'),
+          month: $filter('date')(ngModel.$viewValue, 'MM'),
+          year: $filter('date')(ngModel.$viewValue, 'yyyy')
+        };
+      };
+
+      // ATTRIBUTES (with default values if not set)
+      scope.yearOrder = (attrs.yearOrder && attrs.yearOrder === 'asc') ? false : true; // year order: 'asc' or 'desc', default: desc
+      var endYear = attrs.endYear || new Date().getFullYear(); // default: this year
+      var startYear = attrs.startYear || startYear - 100; // default: this year - 100
+
+      // INIT YEARS, MONTHS AND DAYS NUMBER
+      scope.selects = {
+
+        days: function() {
+
+          // Get number of days based on month + year 
+          // (January = 31, February = 28, April = 30, February 2000 = 29) or 31 if no month selected yet
+          var nbDays = new Date(scope.date.year, scope.date.month, 0).getDate() || 31;
+
+          var daysList = [];
+          for (var i = 1; i <= nbDays; i++) {
+            var iS = i.toString();
+            daysList.push((iS.length < 2) ? '0' + iS : iS); // Adds a leading 0 if single digit
+          }
+          return daysList;
+        },
+        months: function() {
+          var monthList = [];
+          for (var i = 1; i <= 12; i++) {
+            var iS = i.toString();
+            monthList.push((iS.length < 2) ? '0' + iS : iS); // Adds a leading 0 if single digit
+          }
+          return monthList;
+        },
+        years: function() {
+          var yearsList = [];
+          for (var i = endYear; i >= startYear; i--) {
+            yearsList.push(i.toString());
+          }
+          return yearsList;
+        }
+      };
+
+      // WATCH FOR scope.date CHANGES
+      scope.$watch('date', function(date) {
+
+        // IF REQUIRED
+        if (attrs.required) {
+
+          // VALIDATION RULES
+          var yearIsValid = !!date.year && parseInt(date.year) <= endYear && parseInt(date.year) >= startYear;
+          var monthIsValid = !!date.month;
+          var dayIsValid = !!date.day;
+
+          console.log(yearIsValid, monthIsValid, dayIsValid);
+
+          // SET INPUT VALIDITY
+          ngModel.$setValidity('required', yearIsValid || monthIsValid || dayIsValid ? true : false);
+          ngModel.$setValidity('yearRequired', yearIsValid ? true : false);
+          ngModel.$setValidity('monthRequired', monthIsValid ? true : false);
+          ngModel.$setValidity('dayRequired', dayIsValid ? true : false);
+
+          // UPDATE NG MODEL
+          if (yearIsValid && monthIsValid && dayIsValid) {
+            ngModel.$setViewValue(new Date(date.year, date.month - 1, date.day));
+          }
+        }
+
+        // IF NOT REQUIRED (still need the 3 values filled to update the model)
+        else if (date.year && date.month && date.day) {
+          ngModel.$setViewValue(new Date(date.year, date.month - 1, date.day));
+        }
+
+        // IF NOT REQUIRED (still need the 3 values filled to update the model)
+        else if (date.year && date.month && date.day) {
+          ngModel.$setViewValue(new Date(date.year, date.month - 1, date.day));
+        }
+
+      }, true);
+    }
+  }
+});  
+</script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+
+    <script src="angular-messages/angular-messages.js"  crossorigin="anonymous"></script>
+
+    
+  </body>
+</html>
